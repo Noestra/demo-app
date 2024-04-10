@@ -19,6 +19,8 @@ public class UpdateSiteCommandHandler(IDbContextFactory<DemoDbContext> contextFa
 
         site.Name = request.Name;
 
+        await context.SaveChangesAsync(cancellationToken);
+
         return site;
     }
 }
