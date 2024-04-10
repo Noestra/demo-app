@@ -24,6 +24,8 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
             .HasMaxLength(1024);
         builder.Property(x => x.CreatedAt)
             .HasColumnName("created_at");
+        builder.Property(x => x.UpdatedAt)
+            .HasColumnName("updated_at");
 
         builder.HasOne<Site>(x => x.Site)
             .WithMany(x => x.Tags)

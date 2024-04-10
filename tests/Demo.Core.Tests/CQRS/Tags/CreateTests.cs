@@ -22,12 +22,15 @@ public class CreateTests(Fixture fixture) : IClassFixture<Fixture>
         var siteId = SiteId.From(fixture.Sites[1].Id);
         const string name = "test";
         const string unit = "C";
+        const string description = "D";
 
-        var tag = await handler.Handle(new CreateTagCommand(siteId, name, unit), default);
+        var tag = await handler.Handle(new CreateTagCommand(siteId, name, unit, description), default);
         Assert.Equal(siteId.Value, tag.SiteId);
         Assert.Equal(name, tag.Name);
         Assert.Equal(unit, tag.Unit);
+        Assert.Equal(description, tag.Description);
         Assert.Equal(Time, tag.CreatedAt);
+        Assert.Equal(null, tag.UpdatedAt);
         
         // fetch from DB
         await using var context = new DemoDbContext(fixture.Options);
@@ -36,6 +39,8 @@ public class CreateTests(Fixture fixture) : IClassFixture<Fixture>
         Assert.Equal(siteId.Value, dbTag.SiteId);
         Assert.Equal(name, dbTag.Name);
         Assert.Equal(unit, dbTag.Unit);
+        Assert.Equal(description, dbTag.Description);
         Assert.Equal(Time, dbTag.CreatedAt);
+        Assert.Equal(null, tag.UpdatedAt);
     }
 }
