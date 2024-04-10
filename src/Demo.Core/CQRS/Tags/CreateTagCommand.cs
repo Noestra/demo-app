@@ -20,6 +20,7 @@ public class CreateTagCommandHandler(IDbContextFactory<DemoDbContext> contextFac
             Unit = request.Unit,
             Description = request.Description,
             CreatedAt = clock.GetCurrentInstant(),
+            UpdatedAt = null,
         };
         await context.Tags.AddAsync(tag, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

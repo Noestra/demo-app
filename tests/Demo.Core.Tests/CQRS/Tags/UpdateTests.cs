@@ -1,13 +1,17 @@
 using Demo.Core.CQRS.Tags;
 using Demo.Core.Ids;
+using NodaTime;
+using NodaTime.Testing;
 
 namespace Demo.Core.Tests.CQRS.Tags;
 
 public class UpdateTests(Fixture fixture) : IClassFixture<Fixture>
 {
+    private static readonly Instant Time = Instant.FromUtc(2026, 4, 2, 13, 49, 0);
+    
     private UpdateTagCommandHandler CreateHandler()
     {
-        return new UpdateTagCommandHandler(new TestDbContextFactory(fixture.Options));
+        return new UpdateTagCommandHandler(new TestDbContextFactory(fixture.Options), new FakeClock(Time));
     }
 
     [Fact]
@@ -27,6 +31,7 @@ public class UpdateTests(Fixture fixture) : IClassFixture<Fixture>
         Assert.Equal(newName, tag.Name);
         Assert.Equal(newUnit, tag.Unit);
         Assert.Equal(newDescription, tag.Description);
+        Assert.Equal(Time, tag.UpdatedAt);
         
         // fetch from DB
         await using var context = new DemoDbContext(fixture.Options);
@@ -38,6 +43,7 @@ public class UpdateTests(Fixture fixture) : IClassFixture<Fixture>
         Assert.Equal(newName, dbTag.Name);
         Assert.Equal(newUnit, dbTag.Unit);
         Assert.Equal(newDescription, dbTag.Description);
+        Assert.Equal(Time, tag.UpdatedAt);
     }
 
     [Fact]
@@ -46,11 +52,10 @@ public class UpdateTests(Fixture fixture) : IClassFixture<Fixture>
         var handler = CreateHandler();
 
         const string newName = "sdfvdsfv";
-        const string newDescription = "dfgdf";
         var id = TagId.From(345234);
 
         await Assert.ThrowsAsync<ArgumentException>(() => 
-            handler.Handle(new UpdateTagCommand(id, newName, null, newDescription), default)
+            handler.Handle(new UpdateTagCommand(id, newName, null, null), default)
         );
     }
 }

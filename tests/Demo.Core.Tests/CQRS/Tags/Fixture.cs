@@ -30,6 +30,7 @@ public sealed class Fixture : IDisposable
                 Unit = "m",
                 Description = "testDescription1",
                 CreatedAt = Instant.FromUtc(2024, 04, 02, 00, 00, 00),
+                UpdatedAt = Instant.FromUtc(2025, 04, 02, 00, 00, 00),
             },
             new Tag("tag1")
             {
@@ -37,6 +38,7 @@ public sealed class Fixture : IDisposable
                 Unit = "bar",
                 Description = "testDescription2",
                 CreatedAt = Instant.FromUtc(2024, 04, 02, 01, 00, 00),
+                UpdatedAt = Instant.FromUtc(2025, 04, 02, 01, 00, 00),
             },
             new Tag("tag2")
             {
@@ -44,6 +46,7 @@ public sealed class Fixture : IDisposable
                 Unit = "Hz",
                 Description = "testDescription3",
                 CreatedAt = Instant.FromUtc(2024, 04, 02, 02, 00, 00),
+                UpdatedAt = null,
             },
         ];
 

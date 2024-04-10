@@ -24,5 +24,8 @@ public sealed class TagType : ObjectGraphType<Tag>
         Field<NonNullGraphType<DateTimeGraphType>>("createdAt")
             .Description("When the tag was added")
             .Resolve(ctx => ctx.Source.CreatedAt.ToDateTimeUtc());
+        Field<DateTimeGraphType>("updatedAt")
+            .Description("When the tag was updated")
+            .Resolve(ctx => ctx.Source.UpdatedAt?.ToDateTimeUtc());
     }
 }

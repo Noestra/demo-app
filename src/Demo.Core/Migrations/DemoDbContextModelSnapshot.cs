@@ -66,6 +66,10 @@ namespace Demo.Core.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("unit");
 
+                    b.Property<string>("UpdatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("updated_at");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SiteId");
