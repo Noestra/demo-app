@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Core.CQRS.Tags;
 
-public record UpdateTagCommand(TagId Id, string Name, string? Unit) : IRequest<Tag>;
+public record UpdateTagCommand(TagId Id, string Name, string? Unit, string? Description) : IRequest<Tag>;
 
 public class UpdateTagCommandHandler(IDbContextFactory<DemoDbContext> contextFactory)
     : IRequestHandler<UpdateTagCommand, Tag>
@@ -19,6 +19,7 @@ public class UpdateTagCommandHandler(IDbContextFactory<DemoDbContext> contextFac
 
         tag.Name = request.Name;
         tag.Unit = request.Unit;
+        tag.Description = request.Description;
 
         await context.SaveChangesAsync(cancellationToken);
 

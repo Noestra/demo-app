@@ -14,7 +14,9 @@ public sealed record UpdateTagInput(
     [property: Description("The new name")]
     string Name,
     [property: Description("The new unit")]
-    string? Unit = null
+    string? Unit = null,
+    [property: Description("The new description")]
+    string? Description = null
 );
 
 public record UpdateTagPayload(
@@ -32,13 +34,19 @@ public sealed partial class DemoMutation
             .ResolveAsync(async ctx =>
             {
                 var input = ctx.GetArgument<UpdateTagInput>("input");
-                
+
                 // decode the id
                 var id = IdEncoding.Decode<TagId>(input.TagId);
                 if (!id.HasValue)
                     throw new ExecutionError($"Invalid tagId");
-                
-                var tag = await SendCommand(ctx, new UpdateTagCommand(id.Value, input.Name, input.Unit));
+
+                var tag = await SendCommand(ctx,
+                    new UpdateTagCommand(
+                        id.Value,
+                        input.Name,
+                        input.Description,
+                        input.Unit));
+
                 return new UpdateTagPayload(tag);
             });
     }
